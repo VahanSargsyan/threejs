@@ -1,0 +1,15 @@
+{
+  "name": "threejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Vahan Sargsyan",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.4",
+    "nodemon": "^1.12.1"
+  }
+}
