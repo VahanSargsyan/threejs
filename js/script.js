@@ -55,7 +55,7 @@ window.onload = function() {
     ]
     //// add spaces 
     const spacesGeo = new THREE.SphereGeometry(50000, 36, 36);
-    const spacesTexture = new THREE.TextureLoader().load('threejs/img/stars.jpg');
+    const spacesTexture = new THREE.TextureLoader().load('/threejs/img/stars.jpg');
     const spacesMaterial = new THREE.MeshPhongMaterial({ map: spacesTexture });
     const spaces = new THREE.Mesh(spacesGeo, spacesMaterial);
     spaces.material.side = THREE.BackSide;
