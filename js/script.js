@@ -2,7 +2,7 @@ const c = console;
 const dN =  degreeNominal = 0.10471666666666667 // degreeNominal = 6^
 
 const planetCreator = (r, dist, name) => {
-    let link = 'img/' + name + '.jpg'
+    let link = '/ThreeJS_solarSystem/img/' + name + '.jpg'
     const texture = new THREE.TextureLoader().load(link);
     texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
