@@ -1,6 +1,22 @@
 const c = console;
-const degreeNominal = 0.10471666666666667 // degreeNominal = 6^
-const dN = degreeNominal
+const dN =  degreeNominal = 0.10471666666666667 // degreeNominal = 6^
+
+const planetCreator = (r, dist, name) => {
+    let link = '../threejs/img/' + name + '.jpg'
+    const texture = new THREE.TextureLoader().load(link);
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set( 1, 1 );
+    const planetGeo = new THREE.SphereGeometry(r, 36, 36);
+    const planetMat = new THREE.MeshLambertMaterial({ map: texture });
+    const planet = new THREE.Mesh(planetGeo, planetMat);
+    planet.position.x = dist;
+    planet.dist = planet.dist || dist;
+    planet.speed = 5 / (r / 4);
+    planet.xDirection = -1;
+    planet.zDirection = -1;
+    return planet;
+}
 window.onload = function() {
         //camera custome  control start
     document.onkeydown  = e =>{ //keyboard control
@@ -19,49 +35,61 @@ window.onload = function() {
            
     }
     //camera custome  control end
-    c.log(THREE);
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1, 1000 );
+    const camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1, 100000 );
+    camera.position.z = 500;
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
-    const baloonArr = []
-    for (let i = 0; i < 5; i++) {
-        const geometry = new THREE.SphereGeometry( 50,12,12 );
-        const material = new THREE.MeshBasicMaterial( { color: 0xffffff, wireframe: true });
-        const sphere = new THREE.Mesh( geometry, material );
-        sphere.position.x = -250 + 100 * i;
-        baloonArr.push(sphere);
-       
-    }
-    const geometry = new THREE.SphereGeometry( 100,12,12 );
-    const material = new THREE.MeshBasicMaterial( { color: 0xffffff, wireframe: true });
+    const solarSystem = [
+        planetCreator(300, 0, 'sun'),         //sun
+        planetCreator(11.88, 600, 'mercury'),     //mercury
+        planetCreator(12.2, 800, 'venera'),      //venera
+        planetCreator(12.9, 1100, 'eart'),     //Eart
+        planetCreator(6.8, 1350, 'mars'),      //mars
+        planetCreator(142.8, 2000, 'jupiter'),    //jupiter
+        planetCreator(120.66, 2500, 'saturn'),   //saturn
+        planetCreator(51.12, 2900, 'uranus'),    //uranus
+        planetCreator(49.53, 3400, 'neptune'),    //neptune
+        planetCreator(2.1, 3500, 'pluto'),      //pluto
+    ]
+    //// add spaces 
+    const spacesGeo = new THREE.SphereGeometry(50000, 36, 36);
+    const spacesTexture = new THREE.TextureLoader().load('../img/stars.jpg');
+    const spacesMaterial = new THREE.MeshPhongMaterial({ map: spacesTexture });
+    const spaces = new THREE.Mesh(spacesGeo, spacesMaterial);
+    spaces.material.side = THREE.BackSide;
+    scene.add(spaces);    
+    scene.add(...solarSystem);
+    
+    
+    
+   
 
-    const planeGeo = new THREE.PlaneGeometry(300, 200, 500 );
-    const planeMat = new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.DubleSide});
-    const plane = new THREE.Mesh(planeGeo, planeMat);
-    plane.rotation.x = -1;
-    plane.position.z = 50;
-    plane.position.y = -100;
-    scene.add(plane);
-    scene.add(...baloonArr );
-    
-    
-    
-    camera.position.z = 500;
-    // camera.position.x = 100;
-    // camera.position.y = 100;
-    // camera.position.z = 300;
-    // camera.lookAt(new THREE.Vector3(0, 0, 0));
-    // var flyControls = new THREE.FlyControls(camera);
-    // flyControls.movementSpeed = 25;
-    // flyControls.domElement = document.querySelector("#WebGL-output");
-    // flyControls.rollSpeed = Math.PI / 24;
-    // flyControls.autoForward = true;
-    // flyControls.dragToLook = false;
-
-    const light = new THREE.AmbientLight(0x0000ff);
+    const light = new THREE.AmbientLight(0xffffff);
     scene.add( light );
+    const sunLight1 = new THREE.PointLight(0xffffff, 2, 3600, 2);
+    sunLight1.position.set(0, 50, 0);
+    scene.add(sunLight1);
+    const sunLight2 = new THREE.PointLight(0xffffff, 2, 3600, 2);
+    sunLight2.position.set(0, -50, 0);
+    scene.add(sunLight2);
+
+    //experimental zone/////////////////////////////////////////
+    // const texture = new THREE.TextureLoader().load('../img/eartTexture.jpg');
+    // texture.wrapS = THREE.RepeatWrapping;
+    // texture.wrapT = THREE.RepeatWrapping;
+    // texture.repeat.set( 1, 1 );
+    // const secondEartMaterial = new THREE.MeshBasicMaterial({ map: texture })
+    // const secondEartGeo = new THREE.SphereGeometry(50, 36, 36);
+    // const secondEart = new THREE.Mesh(secondEartGeo, secondEartMaterial);
+    // secondEart.position.set(0, 600, 0);
+    // scene.add( secondEart );
+
+
+
+    // const light2 = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1 );
+    // scene.add( light2 );
 // GUI setup start
     // const sphereAnim = () => {
     //      this.rotationX = 0,
@@ -82,18 +110,17 @@ window.onload = function() {
 // GUI setup end
     const animate = function () {
         requestAnimationFrame( animate );
-    
-        // sphere.rotation.x += sphereAnim.rotationX;
-        // sphere.rotation.y += sphereAnim.rotationY;
-        baloonArr.map( el => {
-            el.rotation.y += 0.01//sphereAnim.rotationZ;
+        solarSystem.map( el => {
+             el.rotation.y += 0.01;
+             if (el.position.x >= el.dist) el.xDirection = -1;
+             if (el.position.x <= -el.dist) el.xDirection = 1;
+             if (el.position.z >= el.dist) el.zDirection = -1;
+             if (el.position.z <= -el.dist) el.zDirection = 1;  
+             el.position.x += (el.speed * el.xDirection);  
+             el.position.z += (el.speed * el.zDirection);         
         }) 
-        // sphere.position.x += sphereAnim.positionX;
-        // sphere.position.y += sphereAnim.positionY;
-        // sphere.position.z += sphereAnim.positionZ;
         renderer.render(scene, camera);
     };
-    
     animate();
 }
 
