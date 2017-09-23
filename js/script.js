@@ -37,8 +37,8 @@ const satelliteing = ( parent, satEl, distance, speed = 0) => {
 
 
 window.onload = function() {
-        //camera custome  control start
-    document.onkeydown  = e =>{ //keyboard control
+      //camera custome  control start
+      document.onkeydown  = e =>{ //keyboard control
         if (e.keyCode === 87 || e.keyCode === 38) camera.position.z -= 10;
         if (e.keyCode === 83 || e.keyCode === 40) camera.position.z += 10;
         if (e.keyCode === 68 || e.keyCode === 39) camera.position.x += 10;
@@ -54,9 +54,10 @@ window.onload = function() {
            
     }
     //camera custome  control end
+      
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1, 100000 );
-    camera.position.z = 500;
+    camera.position.z = 1200;
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
@@ -94,11 +95,29 @@ window.onload = function() {
     const spaces = new THREE.Mesh(spacesGeo, spacesMaterial);
     spaces.material.side = THREE.BackSide;
 
-    //experimental zone
-   
-   
-    // const atmosphere = new THREE.FrontSide(sphere);
+    //experimental zone 
+    const listener = new THREE.AudioListener();
+    camera.add( listener );
     
+    //Create the PositionalAudio object (passing in the listener)
+    const sound1 = new THREE.PositionalAudio( listener );
+    const sound2 = new THREE.PositionalAudio( listener );
+    //Load a sound and set it as the PositionalAudio object's buffer
+    const audioLoader = new THREE.AudioLoader();
+    audioLoader.load( '/threejs/audio/sun.ogg', function( buffer ) {
+        sound1.setBuffer( buffer );
+        sound1.setRefDistance( 20 );
+        sound1.play();
+    });
+    audioLoader.load( '/threejs/audio/earth.ogg', function( buffer ) {
+        sound2.setBuffer( buffer );
+        sound2.setRefDistance( 20 );
+        sound2.play();
+
+    });
+   
+    solarSystem[0].add( sound1 );
+    solarSystem[3].add( sound2 );
     
    
 
