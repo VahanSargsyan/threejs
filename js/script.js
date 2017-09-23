@@ -13,7 +13,7 @@ const planetCreator = (r, dist, name, speed) => {
     planet.name = name;
     planet.position.x = dist;
     planet.dist = planet.dist || dist;
-    planet.speed = speed / 40;
+    planet.speed = speed / 25;
     planet.xDirection = -1;
     planet.zDirection = -1;
     return planet;
@@ -57,7 +57,7 @@ window.onload = function() {
       
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1, 100000 );
-    camera.position.z = 1200;
+    camera.position.z = 1150;
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
@@ -102,20 +102,24 @@ window.onload = function() {
     //Create the PositionalAudio object (passing in the listener)
     const sound1 = new THREE.PositionalAudio( listener );
     const sound2 = new THREE.PositionalAudio( listener );
+    c.log( sound2 );
     //Load a sound and set it as the PositionalAudio object's buffer
     const audioLoader = new THREE.AudioLoader();
     audioLoader.load( '/threejs/audio/sun.ogg', function( buffer ) {
         sound1.setBuffer( buffer );
         sound1.setRefDistance( 20 );
+        sound2.loop = true;
         sound1.play();
+
     });
     audioLoader.load( '/threejs/audio/earth.ogg', function( buffer ) {
         sound2.setBuffer( buffer );
-        sound2.setRefDistance( 20 );
+        sound2.setRefDistance( 4 );
+        sound2.loop = true;
         sound2.play();
-
+        
     });
-   
+    c.log( sound2 )
     solarSystem[0].add( sound1 );
     solarSystem[3].add( sound2 );
     
