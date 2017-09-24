@@ -37,7 +37,7 @@ const satelliteing = ( parent, satEl, distance, speed = 0) => {
 
 
 window.onload = function() {
-      //camera custome  control start
+      //camera custom  control start
       document.onkeydown  = e =>{ //keyboard control
         if (e.keyCode === 87 || e.keyCode === 38) camera.position.z -= 10;
         if (e.keyCode === 83 || e.keyCode === 40) camera.position.z += 10;
@@ -53,11 +53,12 @@ window.onload = function() {
         if (e.clientX > window.innerWidth / 2) camera.rotation.y -= dN;
            
     }
-    //camera custome  control end
+    //camera custom  control end
       
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1, 100000 );
-    camera.position.z = 1150;
+    camera.position.z = 1500;
+    camera.position.y = 100;
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
