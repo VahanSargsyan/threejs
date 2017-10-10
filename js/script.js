@@ -87,6 +87,7 @@ window.onload = function() {
     saturnRing.rotation.x = 15 * dN;
     satelliteing(solarSystem[6], saturnRing, 0);
     saturnRing.rotation.x = 1;
+    saturnRing.rotation.y = 0.1;
     satellites.push(saturnRing);
       ////==================>satellites End
     
