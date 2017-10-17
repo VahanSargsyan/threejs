@@ -85,7 +85,9 @@ window.onload = function() {
 
     const saturnRing = new THREE.Mesh(new THREE.RingGeometry(180, 250, 30), new THREE.MeshBasicMaterial({ color: 0xf4f4f4, side: THREE.DoubleSide }));
     saturnRing.rotation.x = 15 * dN;
-    satelliteing(solarSystem[6], saturnRing, 0)
+    satelliteing(solarSystem[6], saturnRing, 0);
+    saturnRing.rotation.x = 1;
+    saturnRing.rotation.y = 0.1;
     satellites.push(saturnRing);
       ////==================>satellites End
     
